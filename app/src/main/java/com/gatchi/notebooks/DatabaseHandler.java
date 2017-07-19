@@ -1,4 +1,4 @@
-package com.example.tomek.notepad;
+package com.gatchi.notebooks;
 
 import android.content.ContentValues;
 import android.content.Context;

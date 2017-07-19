@@ -1,4 +1,4 @@
-package com.example.tomek.notepad;
+package com.gatchi.notebooks;
 
 import android.content.Context;
 import android.graphics.Bitmap;

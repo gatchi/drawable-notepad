@@ -9,7 +9,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp">
 
-    <com.example.tomek.notepad.DrawingView
+    <com.gatchi.notebooks.DrawingView
         android:id="@+id/drawing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
