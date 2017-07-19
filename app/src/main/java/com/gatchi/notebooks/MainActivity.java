@@ -22,7 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 /**
- * Main Activity class
+ * The main view/homescreen
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     public static NoteAdapter noteAdapter;
     public static ListView listView;
 
+	/**
+	 * Where all other visual elements are setup.
+	 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Controls the action icons at the top of the app.
+	 */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Creating menu
@@ -230,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to fill ListView
+     * Method used to link note list manager to view.
      *
      * @param note Array of Notes containing all Notes in Database
      */
@@ -240,6 +246,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(noteAdapter);
     }
 
+	/**
+	 * This adds a note to the list i think.
+	 */
     public void setListViewData(ArrayList<Note> allNotes, Note newNote) {
         if (noteAdapter != null) {
             if (newNote != null){
@@ -250,6 +259,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Creates a popup options menu for a note.
+	 */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -265,6 +277,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Handles note manipulation actions through popup menu.
+	 */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 

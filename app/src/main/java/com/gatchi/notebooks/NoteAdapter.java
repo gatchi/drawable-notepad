@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * Adapter between visual elements and note data.
+ *
+ * An ArrayAdapter can't do this by itself because...?
+ */
 public class NoteAdapter extends ArrayAdapter<Note> {
 
     private Context context;

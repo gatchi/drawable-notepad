@@ -37,7 +37,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Note Activity class that handles:
+ * Manages the note edit screen.
+ * Includes:
  * - New notes creation,
  * - Updating existing ones,
  * - Deleting existing ones if text is changed to blank
@@ -416,7 +417,7 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used for Saving/Updating/Deleting note with special conditions
+     * Method used for saving/updating/deleting notes with special conditions
      * Handled by "Done button"
      */
     public void saveOrUpdateNote(@Nullable MenuItem menu) {

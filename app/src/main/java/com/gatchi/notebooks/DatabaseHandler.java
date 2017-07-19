@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * DatabaseHandler class used for Creating, Accessing and Modifying SQLite Database
+ * Used for creating, accessing, and modifying storage
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
 

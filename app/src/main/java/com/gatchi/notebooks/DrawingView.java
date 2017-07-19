@@ -13,6 +13,9 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * A special view for containing sketches.
+ */
 public class DrawingView extends View {
 
     //initial color

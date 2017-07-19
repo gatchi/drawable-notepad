@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Class that represents single Note
+ * Base unit of this app; a note.
  */
 public class Note {
 

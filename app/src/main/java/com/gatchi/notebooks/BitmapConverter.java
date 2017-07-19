@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Created by tomek on 13.02.16.
+ * Converts to and from byte arrays and bitmaps.
  */
 public final class BitmapConverter {
 
