@@ -18,19 +18,19 @@ import android.view.View;
  */
 public class DrawingView extends View {
 
-    //initial color
+    /// initial color
     private static final int DEFAULT_PAINT_COLOR = Color.BLACK;
-    //drawing path
+    /// drawing path
     private Path drawPath;
-    //drawing and canvas paint
+    /// drawing and canvas paint
     private Paint drawPaint, canvasPaint;
-    //canvas
+    /// canvas
     private Canvas drawCanvas;
-    //canvas bitmap
+    /// canvas bitmap
     private Bitmap canvasBitmap;
-    //brush size
+    /// brush size
     private float brushSize;
-    //erase mode
+    /// erase mode
     private boolean erase;
 
     public DrawingView(Context context, AttributeSet attrs){
@@ -38,6 +38,7 @@ public class DrawingView extends View {
         setupDrawing();
     }
 
+	/** Settings */
     private void setupDrawing(){
         drawPath = new Path();
         drawPaint = new Paint();
@@ -101,24 +102,36 @@ public class DrawingView extends View {
         return true;
     }
 
+	
     public void startNew(){
         drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-        invalidate();
+        invalidate();  // forces the view to redraw
     }
 
+	/**
+	 * Set paint color.
+	 * Set paint color using Android Color system.
+	 * @todo Explain in docs how Android Color system works.
+	 */
     public void setPaintColor(int paintColor) {
         drawPaint.setColor(paintColor);
     }
 
+	/**
+	 * Set brush size.
+	 * @todo Docs: uses a float - but what do those values map to?
+	 */
     public void setBrushSize(float size) {
-
-        // pixel
         brushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 size, getResources().getDisplayMetrics());
         drawPaint.setStrokeWidth(brushSize);
 
     }
 
+	/**
+	 * Changes paintbrush to eraser.
+	 * @todo Make erase immediate (currently doesnt erase until finger is lifted)
+	 */
     public void setErase(boolean isErase){
         erase = isErase;
 
@@ -130,10 +143,18 @@ public class DrawingView extends View {
         }
     }
 
+	/**
+	 * Retrieves the canvas bitmap.
+	 * Used by NoteActivity::saveOrUpdateNote.
+	 */
     public Bitmap getCanvasBitmap() {
         return canvasBitmap;
     }
 
+	/**
+	 * Replaces canvas bitmap with already created one.
+	 * Used by NoteActivity::loadNote.
+	 */
     public void setBitmap(Bitmap bmp) {
         canvasBitmap = bmp;
     }

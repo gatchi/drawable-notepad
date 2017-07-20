@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Converts to and from byte arrays and bitmaps.
+ * Should not be instantiated.
  */
 public final class BitmapConverter {
 
@@ -14,14 +15,14 @@ public final class BitmapConverter {
         throw new InstantiationException("This class is not for instantiation");
     }
 
-    // convert from bitmap to byte array
+    /** Converts from bitmap to a byte array */
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         return stream.toByteArray();
     }
 
-    // convert from byte array to bitmap
+    /** Converts from a byte array to a bitmap */
     public static Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }

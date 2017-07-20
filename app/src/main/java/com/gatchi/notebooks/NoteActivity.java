@@ -44,20 +44,18 @@ import java.util.Date;
  * - Deleting existing ones if text is changed to blank
  * - Text formatting
  * - Drawing
+ *
+ * @todo fix bug that adds two empty lines into loaded note
+ * @todo Enable choice of voice matches?
+ * @todo Voice input text from cursor position
+ * @todo Clicking on "New note" on note edit activity changes note title
+ * @todo Default note title system (handle blank text notes, with pictures on it)
+ * @todo Toggle panels icons color
+ * @todo Disable text/draw panel when back button is clicked to prevent user from saving note when tries to close panel with back button
  */
 public class NoteActivity extends AppCompatActivity {
 
-    //TODO fix bug that adds two empty lines into loaded note (fixed like a retard)
-    //TODO Enable choice of voice matches?
-    //TODO Voice input text from cursor position
-    //TODO add Javadoc
-    //TODO Delete Done button, add back button to left side of toolbar
-    //TODO Add Background function to note edit, then display this background on ListView
-    //TODO Clicking on "New note" on note edit activity changes note title
-    //TODO Default note title system (handle blank text notes, with pictures on it)
-    //TODO Toggle panels icons color
-    //TODO Disable text/draw panel when back button is clicked. Prevents user from saving note when tries to close panel with back button
-
+    
     // Draw mode booleans
     private boolean isDrawModeOn;
     private boolean isTextModeOn;
@@ -102,7 +100,9 @@ public class NoteActivity extends AppCompatActivity {
     // Alert dialog for back button and save button
     private AlertDialog alertDialogSaveNote;
 
-
+	/**
+	 * Setup
+	 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,6 +168,12 @@ public class NoteActivity extends AppCompatActivity {
         });
     }
 
+	/**
+	 * Populates the row of icons at the top.
+	 * These icons are essentially the note-making toolbox,
+	 * and include text and drawing manipulation, speech to text,
+	 * keyboard manipulation, and saving.
+	 */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Creating menu
@@ -176,7 +182,9 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used for first setup of done button AlertDialog
+     * Creates the alert dialog asking the user if they want to save.
+	 * However, it doesn't seem to be used.  May be a bug on my device only.
+	 * @todo Implement/fix this.
      */
     private AlertDialog initAlertDialogSaveNote() {
 
@@ -197,7 +205,13 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method that Overrides back button behavior
+     * Makes pressing back button save note.
+	 * Normally (I believe) hitting the back button exits the current Activity
+	 * in Android and returns to the last.  I think it's a bit more complicated than that,
+	 * but regardless, this method overrides that behavior and forces a save so that
+	 * no one loses a note edit from pressing back.  Plus, it may be more intuitive for many
+	 * users to use the back button to save and exit than hitting the dedicated save & exit button.
+	 * @todo Consider un-overriding or adding a "cancel changes" button.
      */
     @Override
     public void onBackPressed() {
@@ -217,8 +231,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to toggle format text panel
-     *
+     * Toggles text menu panel and sets text mode on.
+     * Triggered by text button at top of view.
      * @param item MenuItem that handles that method in .xml android:OnClick
      */
     public void toggleTextFormatMenu(@Nullable MenuItem item) {
@@ -241,9 +255,10 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to toggle draw menu panel
-     *
+     * Toggles draw menu panel and draw mode.
+	 * Triggered by paint brush icon at top of view.
      * @param item MenuItem that handles that method in .xml android:OnClick
+	 * @todo Consider keeping draw mode on until text mode button is pressed.
      */
     public void toggleDrawMenu(@Nullable MenuItem item) {
 
@@ -265,8 +280,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to set draw mode on
-     * Draw mode is relative to text mode (may be useful in later upates)
+     * Sets draw and text mode.
+	 * @todo Rewrite this code -- its confusing and unclear as is.
      */
     private void setDrawModeOn(boolean isOn) {
         isDrawModeOn = isOn;
@@ -278,6 +293,7 @@ public class NoteActivity extends AppCompatActivity {
      * Method that calculates space left for EditText when format text panel is Visible
      *
      * @return Screen independent pixel count of space for EditText
+	 * @todo Docs: rewrite this header so its readable
      */
     private int calculateMenuMargin() {
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -289,8 +305,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to toggle soft keyboard
-     *
+     * Toggles soft keyboard.
+	 * Triggered by keyboard button at top.
      * @param item MenuItem that handles that method in .xml android:OnClick
      */
     public void toggleKeyboard(@Nullable MenuItem item) {
@@ -302,7 +318,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to hide keyboard
+     * Hides soft keyboard.
+	 * Used by toggleKeyboard.
      */
     private void hideSoftKeyboard() {
         if (this.getCurrentFocus() != null) {
@@ -365,9 +382,9 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to format selected text by modifying Spannable object
-     *
+     * Formats selected text by modifying Spannable object
      * @param view that handles that method in .xml android:OnClick
+	 * @bug Doesn't toggle - ex: bolded text stays bolded permanently.
      */
     public void formatTextActionPerformed(View view) {
 
@@ -398,15 +415,14 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to add note text to EditText
-     *
+     * Loads the note from storage onto the view for reading and editing.
      * @param noteID ID number of the Note entry in the SQLite database
      */
     private void loadNote(int noteID) {
 
         try {
             Note n = dbHandler.getNote(noteID);
-            //todo fix
+            ///@todo fix
             editText.setText(n.getSpannable());
             editText.setSelection(editText.getText().toString().length());
             noteTitle.setText(n.getTitle());
@@ -417,18 +433,18 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used for saving/updating/deleting notes with special conditions
-     * Handled by "Done button"
+     * Saves and closes current note.
+	 * Called by a check button in the top button row.
      */
     public void saveOrUpdateNote(@Nullable MenuItem menu) {
 
         spannable = editText.getText();
         String title = noteTitle.getText().toString();
 
-        if (noteID == -1) {
+        if (noteID == -1) {  // If note does not exist yet
             Note note = new Note(dbHandler.getNoteCount(), title, spannable, drawingView.getCanvasBitmap(), new Date());
             new SaveOrUpdateNoteTask(this, dbHandler, false).execute(note);
-        } else {
+        } else {  // Else, replace the existing note with the updated note
             Note note = new Note(noteID, title, spannable, drawingView.getCanvasBitmap(), new Date());
             new SaveOrUpdateNoteTask(this, dbHandler, true).execute(note);
         }
@@ -438,14 +454,16 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Handle voice button click
+     * Handle voice button click.
+	 * Calls startVoiceRecognitionActivity.
      */
     public void speakButtonClicked(MenuItem menuItem) {
         startVoiceRecognitionActivity();
     }
 
     /**
-     * Start the voice recognition activity.
+     * Calls Android voice recognition software.
+	 * Results are handled by onActivityResult.
      */
     private void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -479,7 +497,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to change drawing color
+     * Method used to change drawing color.
+	 * Five color preset buttons call this.
      */
     public void changeColor(View v) {
 
@@ -497,7 +516,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to change brush size
+     * Changes brush size.
+	 * Three size buttons call this.
      */
     public void changeBrushSize(View v) {
 
@@ -511,13 +531,17 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to change erase mode
-     * Handled by erase and paint button
+     * Controls whether the user drawing or erasing.
+     * Handled by erase and paint buttons.
      */
     public void eraseOrPaintMode(View v) {
         drawingView.setErase(v.getTag().toString().equals("erase"));
     }
 
+	/**
+	 * Clears the note of all drawings.
+	 * Corresponds to the trash can button.
+	 */
     public void wipeCanvas(View v) {
         drawingView.startNew();
     }

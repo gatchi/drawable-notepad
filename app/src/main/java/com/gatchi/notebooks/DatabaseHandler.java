@@ -37,7 +37,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
+	/**
+	 * Creates a new database for storing notes if one doesn't exist.
+	 */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NOTES + "("
@@ -49,6 +51,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 );
     }
 
+	/**
+	 * Handles changes to the database schema by automatically updating the old.
+	 */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -156,6 +161,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         deleteNote(note.getId());
     }
 
+	/**
+     * Method used to delete specified Note from Database
+     * @param note Note to delete
+     */
     public void deleteNote(int noteId) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NOTES, KEY_ID + "=?", new String[]{String.valueOf(noteId)});
