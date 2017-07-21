@@ -38,7 +38,14 @@ public class DrawingView extends View {
         setupDrawing();
     }
 
-	/** Settings */
+	/**
+	 * Settings.
+	 * This is not actually when the drawing is first made,
+	 * that is onDraw().
+	 * Here, configurations are set for the tools that will
+	 * generate the drawing for the first time and in subsequent
+	 * edits.
+	 */
     private void setupDrawing(){
         drawPath = new Path();
         drawPaint = new Paint();
@@ -58,6 +65,14 @@ public class DrawingView extends View {
 
     }
 
+	/**
+	 * Why is this method like this ??
+	 * Why is the bitmap being created during this method instead
+	 * of during the onDraw()? Is this being called before the onDraw()?
+	 * Even so, doesnt it make more sense to have this method do nothing
+	 * if there is 
+	 * @todo Figure out why this is like this.
+	 */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -68,18 +83,34 @@ public class DrawingView extends View {
         else {
             canvasBitmap = Bitmap.createBitmap(canvasBitmap);
             canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
-            drawCanvas = new Canvas(canvasBitmap);
+            drawCanvas = new Canvas(canvasBitmap); // repeated, move line down
         }
     }
 
+	/**
+	 * See details.
+	 * Normally this doesn't do anything, I think.
+	 * I think this is called by the layout manager when its time for
+	 * the view to exist.  Since this view is a graphical view, it's at
+	 * this point the canwas must be created.  The view and manager can't
+	 * do this automatically cause they don't know what canvas to use or
+	 * what prep is needed.
+	 * @todo Give this a better description.
+	 */
     @Override
     protected void onDraw(Canvas canvas) {
+		// Numbers are position offsets from left and top
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
     }
 
+	/**
+	 * Translates touches to draw strokes.
+	 * @todo Make paint appear directly under finger.
+	 */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+		// TODO: Add offsets to X and Y to make paint position more accurate
         float touchX = event.getX();
         float touchY = event.getY();
 
@@ -102,7 +133,10 @@ public class DrawingView extends View {
         return true;
     }
 
-	
+	/**
+	 * Clears the drawing from the view.
+	 * Used by NoteActivity::wipeCanvas().
+	 */
     public void startNew(){
         drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         invalidate();  // forces the view to redraw
