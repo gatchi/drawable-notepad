@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used for first setup of delete all notes button AlertDialog
+     * Creates confirmation dialog for deleting all notes.
+	 * @todo Consider renaming and/or consolidating with setupAlertDialogDeleteSingleNote().
      */
     private AlertDialog initAlertDialogDeleteAllNotes() {
 
@@ -159,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used for setup of delete single note button AlertDialog
+     * Creates confirmation dialog for deleting a note.
+	 * @todo Consider renaming and/or consolidating with initAlertDialogDeleteAllNotes().
      */
     private AlertDialog setupAlertDialogDeleteSingleNote() {
 
@@ -241,13 +243,17 @@ public class MainActivity extends AppCompatActivity {
      * @param note Array of Notes containing all Notes in Database
      */
     void populateListView(ArrayList<Note> note) {
-        noteAdapter = new NoteAdapter(this,
+        noteAdapter = new NoteAdapter(this,  // TODO: fix this line, what is this formatting
                 R.layout.listview_item_row, note);
         listView.setAdapter(noteAdapter);
     }
 
 	/**
-	 * This adds a note to the list i think.
+	 * See below.
+	 * This method seems to be for SaveOrUpdateNoteTask to call but that
+	 * calls setData() directly instead.  This method is not called by
+	 * anything currently.
+	 * @todo Delete this method or implement it in SaveOrUpdateNoteTask.
 	 */
     public void setListViewData(ArrayList<Note> allNotes, Note newNote) {
         if (noteAdapter != null) {
@@ -261,10 +267,13 @@ public class MainActivity extends AppCompatActivity {
 
 	/**
 	 * Creates a popup options menu for a note.
+	 * Creates and shows a popup list menu when the user long-presses a note
+	 * on the preview screen (note list screen).
+	 * Allows the user to delete or edit the note.
+	 * @sa onContextItemSelected()
 	 */
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         if (v.getId() == R.id.listView) {
@@ -279,6 +288,10 @@ public class MainActivity extends AppCompatActivity {
 
 	/**
 	 * Handles note manipulation actions through popup menu.
+	 * This interprets the user action through the popup menu
+	 * and proceeds accordingly.
+	 * @sa onCreateContextMenu()
+	 * @todo Consider deleting the "edit" option; superfluous and potentially confusing.
 	 */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
