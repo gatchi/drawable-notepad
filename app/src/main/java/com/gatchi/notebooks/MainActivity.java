@@ -26,227 +26,227 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity {
 
-    // Array used to backup data before using search function
-    private ArrayList<Note> allNotesSearchArray;
+	// Array used to backup data before using search function
+	private ArrayList<Note> allNotesSearchArray;
 
-    // Database Handler
-    private DatabaseHandler dbHandler;
+	// Database Handler
+	private DatabaseHandler dbHandler;
 
-    // Alert dialogs for back button and delete all notes button
-    private AlertDialog alertDialogDeleteAll;
-    private AlertDialog alertDialogDeleteSingleNote;
+	// Alert dialogs for back button and delete all notes button
+	private AlertDialog alertDialogDeleteAll;
+	private AlertDialog alertDialogDeleteSingleNote;
 
-    // Note selected on menu
-    private Note selectedNote;
+	// Note selected on menu
+	private Note selectedNote;
 
-    // Variables used to handle note list
-    public static NoteAdapter noteAdapter;
-    public static ListView listView;
+	// Variables used to handle note list
+	public static NoteAdapter noteAdapter;
+	public static ListView listView;
 
 	/**
 	 * Where all other visual elements are setup.
 	 */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
-        // Create DatabaseHandler
-        dbHandler = new DatabaseHandler(getApplicationContext());
+		// Create DatabaseHandler
+		dbHandler = new DatabaseHandler(getApplicationContext());
 
-        // Add items to ListView
-        listView = (ListView) findViewById(R.id.listView);
-        populateListView(dbHandler.getAllNotesAsArrayList());
+		// Add items to ListView
+		listView = (ListView) findViewById(R.id.listView);
+		populateListView(dbHandler.getAllNotesAsArrayList());
 
-        // Assign listView to context menu
-        registerForContextMenu(listView);
+		// Assign listView to context menu
+		registerForContextMenu(listView);
 
-        // Setup AlertDialogs
-        alertDialogDeleteAll = initAlertDialogDeleteAllNotes();
+		// Setup AlertDialogs
+		alertDialogDeleteAll = initAlertDialogDeleteAllNotes();
 
-        // Floating Action Button listener used to adding new notes
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideSoftKeyboard();
-                Intent intent = new Intent(MainActivity.this, NoteActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("id", "-1");
-                startActivity(intent);
-            }
-        });
+		// Floating Action Button listener used to adding new notes
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				hideSoftKeyboard();
+				Intent intent = new Intent(MainActivity.this, NoteActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				intent.putExtra("id", "-1");
+				startActivity(intent);
+			}
+		});
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedNote = (Note) parent.getAdapter().getItem(position);
-                editNote(selectedNote.getId());
-            }
-        });
-    }
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				selectedNote = (Note) parent.getAdapter().getItem(position);
+				editNote(selectedNote.getId());
+			}
+		});
+	}
 
 	/**
 	 * Controls the action icons at the top of the app.
 	 */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Creating menu
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Creating menu
+		getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setQueryHint(searchView.getContext().getResources().getString(R.string.search_hint));
+		SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+		searchView.setQueryHint(searchView.getContext().getResources().getString(R.string.search_hint));
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                allNotesSearchArray = (ArrayList<Note>) noteAdapter.getData();
-            }
-        });
+		searchView.setOnSearchClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				allNotesSearchArray = (ArrayList<Note>) noteAdapter.getData();
+			}
+		});
 
-        final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String newText) {
+		final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextChange(String newText) {
 
-                ArrayList<Note> filteredNotesArrayList = new ArrayList<>();
-                for (Note note : allNotesSearchArray) {
-                    if (note.getRawText().contains(newText)) {
-                        filteredNotesArrayList.add(note);
-                    }
-                }
+				ArrayList<Note> filteredNotesArrayList = new ArrayList<>();
+				for (Note note : allNotesSearchArray) {
+					if (note.getRawText().contains(newText)) {
+						filteredNotesArrayList.add(note);
+					}
+				}
 
-                populateListView(filteredNotesArrayList);
-                noteAdapter.notifyDataSetChanged();
+				populateListView(filteredNotesArrayList);
+				noteAdapter.notifyDataSetChanged();
 
-                return true;
-            }
+				return true;
+			}
 
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Do nothing
-                return true;
-            }
-        };
-        searchView.setOnQueryTextListener(queryTextListener);
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				// Do nothing
+				return true;
+			}
+		};
+		searchView.setOnQueryTextListener(queryTextListener);
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Creates confirmation dialog for deleting all notes.
+	/**
+	 * Creates confirmation dialog for deleting all notes.
 	 * @todo Consider renaming and/or consolidating with setupAlertDialogDeleteSingleNote().
-     */
-    private AlertDialog initAlertDialogDeleteAllNotes() {
+	 */
+	private AlertDialog initAlertDialogDeleteAllNotes() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(this.getString(R.string.confirmation)).setTitle(this.getString(R.string.delete_notes_title));
-        builder.setPositiveButton(this.getString(R.string.ok_button), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                deleteAllNotes();
-                Toast.makeText(MainActivity.this, getString(R.string.delete_notes_success),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(this.getString(R.string.confirmation)).setTitle(this.getString(R.string.delete_notes_title));
+		builder.setPositiveButton(this.getString(R.string.ok_button), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				deleteAllNotes();
+				Toast.makeText(MainActivity.this, getString(R.string.delete_notes_success),
+						Toast.LENGTH_SHORT).show();
+			}
+		});
 
-        builder.setNegativeButton(this.getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+		builder.setNegativeButton(this.getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        return builder.create();
-    }
+			}
+		});
+		return builder.create();
+	}
 
-    /**
-     * Creates confirmation dialog for deleting a note.
+	/**
+	 * Creates confirmation dialog for deleting a note.
 	 * @todo Consider renaming and/or consolidating with initAlertDialogDeleteAllNotes().
-     */
-    private AlertDialog setupAlertDialogDeleteSingleNote() {
+	 */
+	private AlertDialog setupAlertDialogDeleteSingleNote() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(this.getString(R.string.confirmation)).setTitle(String.format(this.getString(R.string.delete_note_number), selectedNote.getId()));
-        builder.setPositiveButton(this.getString(R.string.ok_button), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dbHandler.deleteNote(selectedNote);
-                noteAdapter.remove(selectedNote);
-                noteAdapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, String.format(getString(R.string.note_deleted), selectedNote.getId()),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(this.getString(R.string.confirmation)).setTitle(String.format(this.getString(R.string.delete_note_number), selectedNote.getId()));
+		builder.setPositiveButton(this.getString(R.string.ok_button), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dbHandler.deleteNote(selectedNote);
+				noteAdapter.remove(selectedNote);
+				noteAdapter.notifyDataSetChanged();
+				Toast.makeText(MainActivity.this, String.format(getString(R.string.note_deleted), selectedNote.getId()),
+						Toast.LENGTH_SHORT).show();
+			}
+		});
 
-        builder.setNegativeButton(this.getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+		builder.setNegativeButton(this.getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        return builder.create();
-    }
+			}
+		});
+		return builder.create();
+	}
 
-    /**
-     * Method used to show AlertDialog when delete all notes button is clicked
-     */
-    public void showAlertDialogDeleteAllNotes(MenuItem menuItem) {
-        alertDialogDeleteAll.show();
-    }
+	/**
+	 * Method used to show AlertDialog when delete all notes button is clicked
+	 */
+	public void showAlertDialogDeleteAllNotes(MenuItem menuItem) {
+		alertDialogDeleteAll.show();
+	}
 
-    /**
-     * Method used to show AlertDialog when delete note button is clicked
-     */
-    private void showAlertDialogDeleteSingleNote() {
-        alertDialogDeleteSingleNote.show();
-    }
+	/**
+	 * Method used to show AlertDialog when delete note button is clicked
+	 */
+	private void showAlertDialogDeleteSingleNote() {
+		alertDialogDeleteSingleNote.show();
+	}
 
-    /**
-     * Method used to delete all notes via DatabaseHandler
-     */
-    public void deleteAllNotes() {
-        dbHandler.clearAllNotes();
-        noteAdapter.clear();
-        noteAdapter.notifyDataSetChanged();
-    }
+	/**
+	 * Method used to delete all notes via DatabaseHandler
+	 */
+	public void deleteAllNotes() {
+		dbHandler.clearAllNotes();
+		noteAdapter.clear();
+		noteAdapter.notifyDataSetChanged();
+	}
 
-    /**
-     * Method used to enter note edition mode
-     *
-     * @param noteId ID number of the Note entry in the SQLite database
-     */
-    private void editNote(int noteId) {
-        hideSoftKeyboard();
-        Intent intent = new Intent(MainActivity.this, NoteActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("id", String.valueOf(noteId));
-        startActivity(intent);
-    }
+	/**
+	 * Method used to enter note edition mode
+	 *
+	 * @param noteId ID number of the Note entry in the SQLite database
+	 */
+	private void editNote(int noteId) {
+		hideSoftKeyboard();
+		Intent intent = new Intent(MainActivity.this, NoteActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		intent.putExtra("id", String.valueOf(noteId));
+		startActivity(intent);
+	}
 
-    /**
-     * Method used to hide keyboard
-     */
-    private void hideSoftKeyboard() {
-        if (this.getCurrentFocus() != null) {
-            try {
-                InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(this.getCurrentFocus().getApplicationWindowToken(), 0);
-            } catch (RuntimeException e) {
-                //ignore
-            }
-        }
-    }
+	/**
+	 * Method used to hide keyboard
+	 */
+	private void hideSoftKeyboard() {
+		if (this.getCurrentFocus() != null) {
+			try {
+				InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(this.getCurrentFocus().getApplicationWindowToken(), 0);
+			} catch (RuntimeException e) {
+				//ignore
+			}
+		}
+	}
 
-    /**
-     * Method used to link note list manager to view.
-     *
-     * @param note Array of Notes containing all Notes in Database
-     */
-    void populateListView(ArrayList<Note> note) {
-        noteAdapter = new NoteAdapter(this,  // TODO: fix this line, what is this formatting
-                R.layout.listview_item_row, note);
-        listView.setAdapter(noteAdapter);
-    }
+	/**
+	 * Method used to link note list manager to view.
+	 *
+	 * @param note Array of Notes containing all Notes in Database
+	 */
+	void populateListView(ArrayList<Note> note) {
+		noteAdapter = new NoteAdapter(this,  // TODO: fix this line, what is this formatting
+				R.layout.listview_item_row, note);
+		listView.setAdapter(noteAdapter);
+	}
 
 	/**
 	 * See below.
@@ -255,15 +255,15 @@ public class MainActivity extends AppCompatActivity {
 	 * anything currently.
 	 * @todo Delete this method or implement it in SaveOrUpdateNoteTask.
 	 */
-    public void setListViewData(ArrayList<Note> allNotes, Note newNote) {
-        if (noteAdapter != null) {
-            if (newNote != null){
-                noteAdapter.add(newNote);
-            }
-            noteAdapter.setData(allNotes);
-            noteAdapter.notifyDataSetChanged();
-        }
-    }
+	public void setListViewData(ArrayList<Note> allNotes, Note newNote) {
+		if (noteAdapter != null) {
+			if (newNote != null){
+				noteAdapter.add(newNote);
+			}
+			noteAdapter.setData(allNotes);
+			noteAdapter.notifyDataSetChanged();
+		}
+	}
 
 	/**
 	 * Creates a popup options menu for a note.
@@ -272,19 +272,19 @@ public class MainActivity extends AppCompatActivity {
 	 * Allows the user to delete or edit the note.
 	 * @sa onContextItemSelected()
 	 */
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
 
-        if (v.getId() == R.id.listView) {
-            ListView listViewLocal = (ListView) v;
-            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            selectedNote = (Note) listViewLocal.getItemAtPosition(acmi.position);
-            menu.setHeaderTitle(String.format(v.getContext().getString(R.string.choose_activity), selectedNote.getId()));
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.context_menu_note_select, menu);
-        }
-    }
+		if (v.getId() == R.id.listView) {
+			ListView listViewLocal = (ListView) v;
+			AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			selectedNote = (Note) listViewLocal.getItemAtPosition(acmi.position);
+			menu.setHeaderTitle(String.format(v.getContext().getString(R.string.choose_activity), selectedNote.getId()));
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.context_menu_note_select, menu);
+		}
+	}
 
 	/**
 	 * Handles note manipulation actions through popup menu.
@@ -293,19 +293,19 @@ public class MainActivity extends AppCompatActivity {
 	 * @sa onCreateContextMenu()
 	 * @todo Consider deleting the "edit" option; superfluous and potentially confusing.
 	 */
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.context_menu_delete:
-                alertDialogDeleteSingleNote = setupAlertDialogDeleteSingleNote();
-                showAlertDialogDeleteSingleNote();
-                break;
-            case R.id.context_menu_edit:
-                editNote(selectedNote.getId());
-                break;
-        }
-        return super.onContextItemSelected(item);
-    }
+		switch (item.getItemId()) {
+			case R.id.context_menu_delete:
+				alertDialogDeleteSingleNote = setupAlertDialogDeleteSingleNote();
+				showAlertDialogDeleteSingleNote();
+				break;
+			case R.id.context_menu_edit:
+				editNote(selectedNote.getId());
+				break;
+		}
+		return super.onContextItemSelected(item);
+	}
 
 }
