@@ -110,8 +110,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public Note getNote(int id) throws SQLiteException {
 		SQLiteDatabase db = getReadableDatabase();
 
-		Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_ID, KEY_SPANNABLE_NOTE, KEY_IMAGE, KEY_DATE_UPDATED, KEY_NOTE_TITLE}, KEY_ID + "=?",
-				new String[]{String.valueOf(id)}, null, null, null, null);
+		Cursor cursor = db.query(TABLE_NOTES,
+				new String[]{KEY_ID, KEY_SPANNABLE_NOTE, KEY_IMAGE, KEY_DATE_UPDATED, KEY_NOTE_TITLE},
+				KEY_ID + "=?",
+				new String[]{String.valueOf(id)},
+				null, null, null, null);
 
 		if (!cursor.moveToFirst()) {
 			deleteNote(id); //Failed to load note. Maybe the user restored data from an incompatible backup?
@@ -120,14 +123,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 
 		String spannableAsHtml = cursor.getString(cursor.getColumnIndex(KEY_SPANNABLE_NOTE));
-		// :)))))
-		Spannable spannable = (Spannable) Html.fromHtml(Html.toHtml(Html.fromHtml(spannableAsHtml)));
+		/// @todo Analyze this line -- does it need to be this verbose?
+		Spannable spannable = (Spannable) Html.fromHtml(Html.toHtml(Html.fromHtml(spannableAsHtml))); //?
 
 		Bitmap image = BitmapConverter.getImage(cursor.getBlob(cursor.getColumnIndex(KEY_IMAGE)));
 
-		//Default val
 		Date date;
-
 		try {
 			date = dt.parse(cursor.getString(cursor.getColumnIndex(KEY_DATE_UPDATED)));
 		} catch (Exception e) {
@@ -146,8 +147,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (spannable.length() >= 2) {
 			spannable = (Spannable) spannable.subSequence(0, spannable.length() - 2);
 		}
-
-
+		
 		db.close();
 		cursor.close();
 		return new Note(id, title, spannable, image, date);
@@ -260,9 +260,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID)));
 				Spannable spannable = (Spannable) Html.fromHtml(cursor.getString(cursor.getColumnIndex(KEY_SPANNABLE_NOTE)));
 				Bitmap image = BitmapConverter.getImage(cursor.getBlob(cursor.getColumnIndex(KEY_IMAGE)));
-				//Default val
+				
 				Date date;
-
 				try {
 					date = dt.parse(cursor.getString(cursor.getColumnIndex(KEY_DATE_UPDATED)));
 				} catch (Exception e) {
@@ -285,10 +284,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 
 		Note[] result = new Note[notes.size()];
-
 		for (int i = 0; i < notes.size(); i++) {
 			result[i] = notes.get(i);
 		}
+		
 		cursor.close();
 		return result;
 	}
