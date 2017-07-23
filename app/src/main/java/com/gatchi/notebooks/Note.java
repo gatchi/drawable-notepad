@@ -78,14 +78,6 @@ public class Note {
 	}
 
 	/**
-	 * Returns the date and time last accessed as a java Date object.
-	 * @todo delete this
-	 */
-	public Date getDateUpdated() {
-		return dateUpdated;
-	}
-
-	/**
 	 * Returns the date and time last accessed.
 	 * @todo change this to return last time edited.
 	 */
