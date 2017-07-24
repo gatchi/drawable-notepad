@@ -282,7 +282,6 @@ public class NoteActivity extends AppCompatActivity {
 		isTextModeOn = !isOn;
 	}
 
-
 	/**
 	 * Method that calculates space left for EditText when format text panel is Visible
 	 *
