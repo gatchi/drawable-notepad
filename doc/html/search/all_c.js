@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['saveorupdatenote',['saveOrUpdateNote',['../classcom_1_1gatchi_1_1notebooks_1_1_note_activity.html#a9c5db7133852ef9afd02177e143d4bbd',1,'com::gatchi::notebooks::NoteActivity']]],
+  ['saveorupdatenotetask',['SaveOrUpdateNoteTask',['../classcom_1_1gatchi_1_1notebooks_1_1_save_or_update_note_task.html',1,'com.gatchi.notebooks.SaveOrUpdateNoteTask'],['../classcom_1_1gatchi_1_1notebooks_1_1_save_or_update_note_task.html#ae9e7417ee5bd30db69c70dd2a8936fc8',1,'com.gatchi.notebooks.SaveOrUpdateNoteTask.SaveOrUpdateNoteTask()']]],
+  ['setbitmap',['setBitmap',['../classcom_1_1gatchi_1_1notebooks_1_1_drawing_view.html#ae97706dd76c126c10ae3307a069e770d',1,'com::gatchi::notebooks::DrawingView']]],
+  ['setbrushsize',['setBrushSize',['../classcom_1_1gatchi_1_1notebooks_1_1_drawing_view.html#a5aae209b56fd0457322eedf762971ff8',1,'com::gatchi::notebooks::DrawingView']]],
+  ['setdata',['setData',['../classcom_1_1gatchi_1_1notebooks_1_1_note_adapter.html#a256339eaf61875559881ca7ed8028a4b',1,'com::gatchi::notebooks::NoteAdapter']]],
+  ['setdrawmodeon',['setDrawModeOn',['../classcom_1_1gatchi_1_1notebooks_1_1_note_activity.html#a34402ccb363f4ab48d7e5d5a3a993064',1,'com::gatchi::notebooks::NoteActivity']]],
+  ['seterase',['setErase',['../classcom_1_1gatchi_1_1notebooks_1_1_drawing_view.html#a3bccbec311a8807b40a41f31d737fb9e',1,'com::gatchi::notebooks::DrawingView']]],
+  ['setlistviewdata',['setListViewData',['../classcom_1_1gatchi_1_1notebooks_1_1_main_activity.html#a06b06e96730a1a0d41027ecdab71e239',1,'com::gatchi::notebooks::MainActivity']]],
+  ['setpaintcolor',['setPaintColor',['../classcom_1_1gatchi_1_1notebooks_1_1_drawing_view.html#a8f6f50b36ccecdb85731b49411fec8a5',1,'com::gatchi::notebooks::DrawingView']]],
+  ['setupalertdialogdeletesinglenote',['setupAlertDialogDeleteSingleNote',['../classcom_1_1gatchi_1_1notebooks_1_1_main_activity.html#adf6794fb95956c4c1c40975a10182faa',1,'com::gatchi::notebooks::MainActivity']]],
+  ['setupdrawing',['setupDrawing',['../classcom_1_1gatchi_1_1notebooks_1_1_drawing_view.html#a789c731124d7695e98e295b14c904948',1,'com::gatchi::notebooks::DrawingView']]],
+  ['showalertdialogdeleteallnotes',['showAlertDialogDeleteAllNotes',['../classcom_1_1gatchi_1_1notebooks_1_1_main_activity.html#a03871f0b3d35687c8ae84ba48c80a1e9',1,'com::gatchi::notebooks::MainActivity']]],
+  ['showalertdialogdeletesinglenote',['showAlertDialogDeleteSingleNote',['../classcom_1_1gatchi_1_1notebooks_1_1_main_activity.html#a82aaab888bc388e3303b8fbd7e409176',1,'com::gatchi::notebooks::MainActivity']]],
+  ['speakbuttonclicked',['speakButtonClicked',['../classcom_1_1gatchi_1_1notebooks_1_1_note_activity.html#abdc53004d759dad0755be1e304e325ca',1,'com::gatchi::notebooks::NoteActivity']]],
+  ['startnew',['startNew',['../classcom_1_1gatchi_1_1notebooks_1_1_drawing_view.html#ad9a773772c662d3def40acba3de2ca39',1,'com::gatchi::notebooks::DrawingView']]],
+  ['startvoicerecognitionactivity',['startVoiceRecognitionActivity',['../classcom_1_1gatchi_1_1notebooks_1_1_note_activity.html#a9b35f9b673ee1ec31fc524d1d6fe41cd',1,'com::gatchi::notebooks::NoteActivity']]]
+];
