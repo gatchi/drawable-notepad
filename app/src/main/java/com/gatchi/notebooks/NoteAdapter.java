@@ -36,7 +36,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 	 * and info in place and its own internal layout set (in essence, made pretty).
 	 */
 	@Override
-	@NonNull  // is this necessary?
+	@NonNull  // TODO: is this necessary?
 	public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 		View row = convertView;  // view to re-use (if possible)
 		NoteHolder holder;  // view info to display

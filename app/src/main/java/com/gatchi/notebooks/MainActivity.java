@@ -241,10 +241,10 @@ public class MainActivity extends AppCompatActivity {
 	 * Method used to link note list manager to view.
 	 *
 	 * @param note Array of Notes containing all Notes in Database
+	 * @todo rename "note" to something better.  hell, even "notes" would be better.
 	 */
 	void populateListView(ArrayList<Note> note) {
-		noteAdapter = new NoteAdapter(this,  // TODO: fix this line, what is this formatting
-				R.layout.listview_item_row, note);
+		noteAdapter = new NoteAdapter(this, R.layout.listview_item_row, note);
 		listView.setAdapter(noteAdapter);
 	}
 

@@ -21,8 +21,8 @@ import java.util.Locale;
  * Used for creating, accessing, and modifying storage
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-
-
+	/// @todo Consider re-ordering methods so getters and setters are together, and/or alpha order.
+	
 	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "notepadDatabase";
 	private static final String TABLE_NOTES = "notes";
